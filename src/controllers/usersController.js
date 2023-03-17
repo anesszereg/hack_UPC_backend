@@ -42,16 +42,11 @@ const signUp = asyncHandler(async (req, res) => {
         password: hashedPassword
     };
 
-    const newUser = await userModel.create(user);
+    await userModel.create(user);
 
-    if (newUser) {
-        return res.status(200).json({
-            message: 'Registered an account.'
-        });
-    };
-
-    res.status(400);
-    throw new Error();
+    return res.status(200).json({
+        message: 'Registered an account.'
+    });
 });
 
 module.exports = { signUp };
