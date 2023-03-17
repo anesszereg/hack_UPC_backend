@@ -26,11 +26,8 @@ const createPost = asyncHandler(async (req, res) => {
     const uploadPromises = files.map(file => {
         return new Promise((resolve, reject) => {
             const stream = cloudinary.uploader.upload_stream({ folder: 'posts' }, (error, result) => {
-                if (error) {
-                    reject(new Error('Something went wrong. Please try again later.'));
-                } else {
-                    resolve(result.secure_url);
-                }
+                if (error) { reject(new Error('Something went wrong. Please try again later.')); }
+                else { resolve(result.secure_url); }
             });
             streamifier.createReadStream(file.buffer).pipe(stream);
         });

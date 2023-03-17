@@ -21,7 +21,7 @@ app.use(errorHandler);
 app.use('/api/auth', require('./routes/authRouter'));
 app.use('/api/users', require('./routes/usersRouter'));
 app.use('/api/posts', require('./routes/postsRouter'));
-app.use('/api/event', require('./routes/eventRouter'));
+app.use('/api/events', require('./routes/eventsRouter'));
 
 // * Connection * //
 app.listen(PORT, () => {

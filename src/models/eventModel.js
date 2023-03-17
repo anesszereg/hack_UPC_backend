@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
-    
+
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -18,16 +18,16 @@ const eventSchema = new mongoose.Schema({
         trim: true
     },
     image: {
-        type: [String],
+        type: String,
         required: true
     },
-    membersNumber:{
-        type:String,
-        require:true
+    membersNumber: {
+        type: String,
+        require: true
     },
-    location:{
-        type:String,
-        require:true,
+    location: {
+        type: String,
+        require: true,
     },
     sponsors: [{
         type: mongoose.Schema.Types.ObjectId,
