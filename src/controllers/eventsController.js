@@ -8,7 +8,10 @@ const eventModel = require("../models/eventModel");
 // * Config
 const cloudinary = require('../config/cloudinary');
 
-// Create an  new Event
+// * CREATE EVENT * //
+// @desc    Creates a new event
+// @route   POST /api/events
+// @access  private
 const createEvent = async (req, res) => {
   const { title, description, location } = req.body;
   const image = req.file;
@@ -36,5 +39,17 @@ const createEvent = async (req, res) => {
   res.status(200).json(newEvent);
 };
 
+// * GET EVENT * //
+// @desc    Gets an event by its id
+// @route   GET /api/events/:id
+// @access  private
+const getEventById = async (req, res) => {
+  const { id } = req.params;
 
-module.exports = { createEvent };
+  const post = await eventModel.findById(id);
+
+  res.status(200).json(post);
+};
+
+
+module.exports = { createEvent, getEventById };
