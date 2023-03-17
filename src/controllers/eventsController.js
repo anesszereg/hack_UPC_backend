@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const streamifier = require('streamifier');
 
 // * Models
-const eventModel = require("../models/eventModel");
+const EventModel = require("../models/eventModel");
 
 // * Config
 const cloudinary = require('../config/cloudinary');

@@ -8,7 +8,7 @@ const { isEmail } = require('validator');
 const generateJWT = require('../functions/generateJWT');
 
 // * Models
-const userModel = require('../models/userModel');
+const User = require('../models/userModel');
 
 // * LOG IN * //
 // @desc    login user
@@ -30,7 +30,7 @@ const logIn = ('/', asyncHandler(async (req, res) => {
     };
 
     // Finds the user
-    const user = await userModel.findOne({ email: email.toLowerCase() })
+    const user = await User.findOne({ email: email.toLowerCase() })
         .select('+password');
 
     if (user && compareSync(password, user.password)) {

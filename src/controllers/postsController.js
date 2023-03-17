@@ -6,8 +6,8 @@ const streamifier = require('streamifier');
 const cloudinary = require('../config/cloudinary');
 
 // * Models
-const userModel = require('../models/userModel');
-const postModel = require('../models/postModel');
+const Post = require('../models/postModel');
+const Comment = require('../models/commentModel');
 
 // * CREATE POST * //
 // @desc    Creates a new post
@@ -34,7 +34,7 @@ const createPost = asyncHandler(async (req, res) => {
     });
     const images = await Promise.all(uploadPromises);
 
-    const newPost = await postModel.create({
+    const newPost = await Post.create({
         author: req.user._id,
         title,
         description,
@@ -44,4 +44,77 @@ const createPost = asyncHandler(async (req, res) => {
     return res.status(200).json(newPost);
 });
 
-module.exports = { createPost };
+// * COMMENT * //
+// @desc    Creates a new comment under a post
+// @route   POST /posts/:id/comments
+// @access  private
+const createComment = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { content } = req.body;
+
+
+    if (!content) {
+        res.status(404);
+        throw new Error('Please provide a valid comment.');
+    };
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+        res.status(404);
+        throw new Error('Post not found. Please try again later.');
+    };
+
+    const comment = await Comment.create({
+        author: req.user._id,
+        content,
+        post: post._id
+    });
+
+    post.comments.push(comment._id);
+    post.save();
+
+    res.json(comment);
+});
+
+// * LIKE A POST * //
+// @desc    Like a post
+// @route   POST /posts/:id/likes
+// @access  private
+const addLike = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+        res.status(404);
+        throw new Error('Post not found. Please try again later.');
+    };
+
+    post.likes.push(req.user._id);
+    post.save();
+
+    res.json(post);
+});
+
+// * UNLIKE A POST * //
+// @desc    Removes a like from a post
+// @route   DELETE /posts/:id/likes
+// @access  private
+const removeLike = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+        res.status(404);
+        throw new Error('Post not found. Please try again later.');
+    };
+
+    post.likes.pull(req.user._id);
+    post.save();
+
+    res.json(post);
+});
+
+module.exports = { createPost, createComment, addLike, removeLike };

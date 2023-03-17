@@ -7,11 +7,15 @@ const multer = require('multer');
 const authenticate = require('../middleware/authenticate');
 
 // * Controller imports
-const { createPost } = require('../controllers/postsController');
+const { createPost, createComment, addLike, removeLike } = require('../controllers/postsController');
 
 // * Configure Multer
 const upload = multer();
 
 router.post('/', authenticate, upload.array('images', 10), createPost);
+router.post('/:id/comments', authenticate, createComment);
+
+router.post('/:id/likes', authenticate, addLike);
+router.delete('/:id/likes', authenticate, removeLike);
 
 module.exports = router;
