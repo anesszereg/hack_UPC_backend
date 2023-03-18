@@ -37,8 +37,10 @@ const logIn = ('/', asyncHandler(async (req, res) => {
 
     if (user && compareSync(password, user.password)) {
         return res.status(200).json({
-            token: generateJWT(user._id),
-            details: user
+            data: {
+                token: generateJWT(user._id),
+                details: user
+            }
         });
     };
 
