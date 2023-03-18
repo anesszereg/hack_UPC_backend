@@ -15,6 +15,8 @@ const authenticate = asyncHandler(async (req, res, next) => {
 
             // Gets the user data
             req.user = await User.findById(decodedToken.item).select('-password');
+            if (!req.user) throw new Error('Not authorized. Invalid token.');
+
             next();
         }
         catch (error) {
