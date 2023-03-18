@@ -19,14 +19,16 @@ const logIn = ('/', asyncHandler(async (req, res) => {
 
     // Checks if the user provided email and password
     if (!email || !password) {
-        res.status(400);
-        throw new Error('Please enter an email and password.');
+        const message = 'Please enter a valid email.'
+        res.status(400).json({ message });
+        throw new Error(message);
     };
 
     // Checks if the user provided a valid email address
     if (!isEmail(email)) {
-        res.status(400);
-        throw new Error('Please enter a valid email.');
+        const message = 'Please enter a valid email.'
+        res.status(400).json({ message });
+        throw new Error(message);
     };
 
     // Finds the user
@@ -41,7 +43,7 @@ const logIn = ('/', asyncHandler(async (req, res) => {
     };
 
     const message = 'Wrong Email or Password.';
-    res.status(401).json(message);
+    res.status(401).json({ message });
     throw new Error(message);
 }));
 
