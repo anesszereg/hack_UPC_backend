@@ -16,7 +16,7 @@ app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(bodyParser.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: false, limit: "1mb" }));
 app.use(errorHandler);
-app.use(morgan('tiny'));
+if (process.env.NODE_ENV === 'DEVELOPMENT') app.use(morgan('tiny'));
 
 // * Routes * //
 app.use('/api/auth', require('./routes/authRouter'));
