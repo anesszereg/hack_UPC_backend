@@ -15,22 +15,25 @@ const signUp = asyncHandler(async (req, res) => {
 
     // Checks if the user provided email and password
     if (!email || !password || !fullName) {
-        res.status(400);
-        throw new Error('Please enter all of your details.');
+        const message = 'Please enter all of your details.';
+        res.status(400).json(message);
+        throw new Error(message);
     };
 
     // Checks if the user provided a valid email address
     if (!isEmail(email)) {
-        res.status(400);
-        throw new Error('Please enter a valid email.');
+        const message = 'Please enter a valid email.';
+        res.status(400).json(message);
+        throw new Error(message);
     };
 
     // Checks if the user already exists
     const userExists = await User.findOne({ email: email.toLowerCase() });
 
     if (userExists) {
-        res.status(409);
-        throw new Error('Account already exists.');
+        const message = 'Account already exists.';
+        res.status(409).json(message);
+        throw new Error(message);
     };
 
     // Hashes the password
@@ -45,9 +48,8 @@ const signUp = asyncHandler(async (req, res) => {
 
     await User.create(user);
 
-    return res.status(200).json({
-        message: 'Registered an account.'
-    });
+    const message = 'Registered an account.'
+    return res.status(200).json({ message });
 });
 
 // * SEARCH * //
@@ -58,15 +60,16 @@ const search = asyncHandler(async (req, res) => {
     const { fullName } = req.query;
 
     if (!fullName) {
-        res.status(409);
-        throw new Error('Please provide a query.');
+        const message = 'Please provide a query.';
+        res.status(409).json({ message });
+        throw new Error(message);
     };
 
     const results = await User.find({
         fullName: { $regex: fullName, $options: 'i' },
     });
 
-    res.json(results);
+    res.json({ results });
 });
 
 // * FOLLOW * //
